@@ -1,0 +1,27 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Environments
+env/
+venv/
+ENV/
+.env
+
+# Session output records (keep sample_data, ignore live dumps)
+session_records/*.json
+session_records/*.csv
+session_records/*.html
+session_records/*.md
+!session_records/.gitkeep
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

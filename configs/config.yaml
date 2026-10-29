@@ -1,0 +1,55 @@
+# Multimodal Attendance & Engagement Agent Configuration
+system:
+  project_name: "Multimodal Attendance & Engagement Agent"
+  version: "1.0.0"
+  offline_mode: true
+  log_level: "INFO"
+
+attendance:
+  # Minimum continuous or aggregate presence required to mark attendance (in seconds)
+  sustained_presence_threshold_seconds: 180  # 3 minutes for short demos, customizable for 45-min classes
+  # Minimum percentage of total session time a student must be present
+  min_presence_ratio: 0.60
+  # Sliding window size for presence smoothing (seconds)
+  tracking_window_seconds: 10
+  # Temporary appearance threshold: detections shorter than this are considered passers-by and ignored
+  transient_appearance_filter_seconds: 30
+
+vision:
+  # Detection method: 'haar', 'dnn', or 'simulated'
+  detector_type: "haar"
+  face_confidence_threshold: 0.65
+  # Head pose thresholds (in degrees)
+  head_pose:
+    max_yaw_attention_degrees: 30.0    # Looking left/right beyond this is distracted
+    max_pitch_attention_degrees: 25.0  # Looking down/up beyond this is distracted
+  movement:
+    inactivity_threshold_seconds: 120  # Inactive/drowsy if no head movement for 2 mins
+    restlessness_motion_threshold: 0.45
+
+audio:
+  sample_rate: 16000
+  chunk_duration_seconds: 1.0
+  energy_rms_speech_threshold: 0.035
+  silence_threshold_db: -40.0
+  chatter_noise_threshold: 0.15
+
+fusion:
+  # Weight distribution for composite engagement score (must sum to 1.0)
+  visual_weight: 0.60
+  audio_weight: 0.40
+  smoothing_alpha: 0.35  # Exponential moving average factor
+
+ai_agent:
+  # Suggestion trigger thresholds
+  attention_drop_threshold: 45.0          # Below this % engagement triggers intervention
+  attention_drop_duration_seconds: 120    # Must persist for 2 minutes
+  monologue_warning_seconds: 900          # 15 minutes of uninterrupted teacher speech
+  high_energy_discussion_threshold: 75.0
+  enable_generative_ai_cloud_hook: false  # Can be enabled with Google Cloud Vertex AI / Gemini API
+  model_name: "gemini-1.5-flash"
+
+privacy:
+  anonymize_student_identities: true
+  hash_student_ids: true
+  save_raw_video_frames: false
